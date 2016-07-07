@@ -6,7 +6,7 @@ namespace PresentationApp
 {
 	public class AudienceMainPage : ContentPage
 	{
-		public AudienceMainPage ()
+		public AudienceMainPage (ServerInfo server_info)
 		{
 			Content = new StackLayout { 
 				Children = {
