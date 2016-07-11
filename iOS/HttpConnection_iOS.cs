@@ -42,7 +42,7 @@ namespace PresentationApp.iOS
 		private ServerInfo GetServerByListenBroadcast()
 		{
 			// 送受信に利用するポート番号
-			var port = 8000;
+			var port = 3001;//8000;
 			// ブロードキャストを監視するエンドポイント
 			var remote = new IPEndPoint(IPAddress.Any, port);
 			// UdpClientを生成
@@ -71,7 +71,7 @@ namespace PresentationApp.iOS
 			System.Diagnostics.Debug.WriteLine (client.BaseAddress);
 
 			var content = new StringContent (jsonData, Encoding.UTF8, "application/json");
-			HttpResponseMessage response = await client.PostAsync("/", content);
+			HttpResponseMessage response = await client.PostAsync("/action", content);
 
 			// this result string should be something like: "{"token":"rgh2ghgdsfds"}"
 			var result = await response.Content.ReadAsStringAsync();
