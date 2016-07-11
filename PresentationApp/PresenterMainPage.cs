@@ -13,19 +13,21 @@ namespace PresentationApp
 			next_button.Clicked += (s, a) => {
 				DependencyService.Get<IHttpConnection>().SendToServer(
 					server_info.server_ip_addr, 
-					"{'cmds':[{'action': 'key', 'option': 'keyTap', 'args':['right']}]}"
+					@"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""right""]}]}"
 				);
 			};
+
 			var prev_button = new Button { Text = "前へ" };
 			prev_button.Clicked += (s, a) => {
 				DependencyService.Get<IHttpConnection>().SendToServer(
 					server_info.server_ip_addr, 
-					"{'cmds':[{'action': 'key', 'option': 'keyTap', 'args':['left']}]}"
+					@"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""left""]}]}"
 				);
 			};
 
 			StackLayout buttons = new StackLayout {
 				Spacing = 20,
+				Padding = new Thickness (10, 10, 10, 20),
 				Orientation = StackOrientation.Horizontal,
 				Children = {
 					next_button,
