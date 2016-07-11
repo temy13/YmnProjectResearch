@@ -6,7 +6,7 @@ namespace PresentationApp
 {
 	public class AudienceMainPage : ContentPage
 	{
-		public AudienceMainPage ()
+		public AudienceMainPage (ServerInfo server_info)
 		{
             //ボタンを生成
             var audience_button = new Button { Text = "チャット" };
