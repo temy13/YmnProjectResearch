@@ -35,11 +35,20 @@ namespace PresentationApp
 				}
 			};
 
+//			var image = new Image { Aspect = Aspect.AspectFit };
+//			image.Source = ImageSource.FromFile("sample.jpg");
+			ExBoxView exBoxView = new ExBoxView(){
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.EndAndExpand,
+				Color = Color.Blue
+			};
+
 			this.Content = new StackLayout {
 				Spacing = 0,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Children = {
-					buttons
+					buttons,
+					exBoxView
 				}
 			};
 
