@@ -16,11 +16,18 @@ namespace PresentationApp.iOS
 {
 	public class HttpConnection_iOS : IHttpConnection
 	{
+		private ServerInfo _serverInfo = new ServerInfo();
 		public HttpConnection_iOS ()
 		{
 		}
-		public ServerInfo GetServerByBroadCast (string key_message)
+		public ServerInfo GetServer (string key_message)
 		{
+			System.Diagnostics.Debug.WriteLine ("get server");
+			System.Diagnostics.Debug.WriteLine (_serverInfo.server_ip_addr);
+			if (this._serverInfo.server_ip_addr != ""){
+				return this._serverInfo;
+			}
+			//boradcast
 			//ListenBroadcastMessage ();
 			// 送受信に利用するポート番号
 			var port = 8000;
@@ -34,10 +41,8 @@ namespace PresentationApp.iOS
 			client.Close();
 			//受信
 			System.Diagnostics.Debug.WriteLine("sending");
-//			ServerInfo si = new ServerInfo ();
-//			si.server_ip_addr = "192.168.2.113";
-//			return si;
-			return GetServerByListenBroadcast();
+			this._serverInfo = GetServerByListenBroadcast();
+			return _serverInfo;
 		}
 		private ServerInfo GetServerByListenBroadcast()
 		{
@@ -58,8 +63,10 @@ namespace PresentationApp.iOS
 			var stream = new MemoryStream(Encoding.Unicode.GetBytes(data));
 			var serializer = new DataContractJsonSerializer(typeof(ServerInfo));
 			ServerInfo server_info = (ServerInfo)serializer.ReadObject(stream);
-
-			return server_info;
+//			ServerInfo si = new ServerInfo ();
+//			si.server_ip_addr = "192.168.2.113";
+			return si;
+			//return server_info;
 		}
 
 		public async void SendToServer(string ip, string jsonData){

@@ -1,12 +1,13 @@
 #Autosave files
 *~
 
-## temp
+## temy
 *.plist
 *.csproj
 iOS/Info.plist
 iOS/PresentationApp.iOS.csproj
 PresentationApp/PresentationApp.csproj
+*.sln
 
 #build
 [Oo]bj/

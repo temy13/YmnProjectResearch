@@ -14,7 +14,7 @@ namespace PresentationApp
 			//ボタンクリック時の処理
 			audience_button.Clicked += async (s, a) => {
 				//ページを遷移する
-				ServerInfo server_info = DependencyService.Get<IHttpConnection>().GetServerByBroadCast(keyEntry.Text);
+				ServerInfo server_info = DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).GetServer(keyEntry.Text);
 				await Navigation.PushAsync(new AudienceMainPage(server_info));
 			};
 			//ボタンを生成
@@ -22,8 +22,8 @@ namespace PresentationApp
 			//ボタンクリック時の処理
 			presenter_button.Clicked += async (s, a) => {
 				//ページを遷移する
-				//ServerInfo server_info = DependencyService.Get<IHttpConnection>().GetServerByBroadCast(keyEntry.Text);
-				ServerInfo server_info = new ServerInfo();
+				ServerInfo server_info = DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).GetServer(keyEntry.Text);
+				//ServerInfo server_info = new ServerInfo();
 				await Navigation.PushAsync(new PresenterMainPage(server_info));
 			};
 
@@ -36,9 +36,6 @@ namespace PresentationApp
 					presenter_button
 				}
 			};
-			((App)Application).GlobalVariable = 10;
-			int variable = ((App)Application).GlobalVariable;
-			System.Diagnostics.Debug.WriteLine (variable);
 		}
 	}
 }

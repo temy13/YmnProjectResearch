@@ -6,12 +6,6 @@ namespace PresentationApp
 {
 	public class App : Application
 	{
-		private int globalVariable = 1;
-		public int GlobalVariable
-		{
-			get { return globalVariable; };
-			set { globalVariable = value };
-		}
 
 		public App ()
 		{
