@@ -31,7 +31,7 @@ namespace PresentationApp
 				Spacing = 0,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Children = {
-					keyEntry,
+					//keyEntry,
 					audience_button,
 					presenter_button
 				}

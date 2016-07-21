@@ -1,15 +1,18 @@
 ﻿using System;
 using PresentationApp;
-using PresentationApp.iOS;
+using PresentationApp.Droid;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform;
 using Xamarin.Forms.Platform.iOS;
 using Foundation;
 using UIKit;
 using System.ComponentModel;
 using System.Drawing;
 
-[assembly:ExportRenderer(typeof(ExBoxView),typeof(ExBoxViewRenderer))]
-namespace PresentationApp.iOS
+
+[assembly: ExportRenderer(typeof(ExBoxView), typeof(ExBoxViewRenderer))]
+
+namespace PresentationApp.Droid
 {
 	internal class ExBoxViewRenderer : BoxRenderer 
 	{
@@ -45,7 +48,7 @@ namespace PresentationApp.iOS
 
 			if (_touch != null) {
 				var p = _touch.LocationInView(this); //位置情報取得
-				_exBoxView.OnBegin((int) p.X, (int) p.Y);
+				_exBoxView.OnBegin((float) p.X, (float) p.Y);
 			}
 		}
 
@@ -54,10 +57,11 @@ namespace PresentationApp.iOS
 			base.TouchesMoved(touches, evt);
 			if (_touch != null) {
 				var p = _touch.LocationInView(this); //位置情報取得
-				if (_exBoxView.OnMove((int)p.X, (int)p.Y)) {//データを追加すると同時に１つ前のデータを取得する
-					//追加があった場合は、再描画する
-					InvokeOnMainThread(SetNeedsDisplay);
-				}
+				_exBoxView.OnMove((float)p.X, (float)p.Y);
+//				if (_exBoxView.OnMove((int)p.X, (int)p.Y)) {//データを追加すると同時に１つ前のデータを取得する
+//					//追加があった場合は、再描画する
+//					InvokeOnMainThread(SetNeedsDisplay);
+//				}
 			}
 		}
 

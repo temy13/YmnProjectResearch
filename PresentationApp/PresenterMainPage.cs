@@ -8,20 +8,30 @@ namespace PresentationApp
 	{
 		public PresenterMainPage (ServerInfo server_info)
 		{
-			var next_button = new Button { Text = "次へ" };
+			var next_button = new Button { 
+				Text = "次へ",
+				TextColor = Color.Black,
+				BackgroundColor = Color.Aqua,
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.FillAndExpand
+			};
 
 			next_button.Clicked += (s, a) => {
-				DependencyService.Get<IHttpConnection>().SendToServer(
-					server_info.server_ip_addr, 
-					@"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""right""]}]}"
+				DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).ButtonClick(
+					"right"
 				);
 			};
 
-			var prev_button = new Button { Text = "前へ" };
+			var prev_button = new Button { 
+				Text = "前へ",
+				TextColor = Color.Black,
+				BackgroundColor = Color.Aqua,
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.FillAndExpand
+			};
 			prev_button.Clicked += (s, a) => {
-				DependencyService.Get<IHttpConnection>().SendToServer(
-					server_info.server_ip_addr, 
-					@"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""left""]}]}"
+				DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).ButtonClick(
+					"left"
 				);
 			};
 
@@ -29,9 +39,10 @@ namespace PresentationApp
 				Spacing = 20,
 				Padding = new Thickness (10, 10, 10, 20),
 				Orientation = StackOrientation.Horizontal,
+				HorizontalOptions = LayoutOptions.FillAndExpand,
 				Children = {
-					next_button,
-					prev_button
+					prev_button,
+					next_button
 				}
 			};
 
@@ -39,7 +50,8 @@ namespace PresentationApp
 //			image.Source = ImageSource.FromFile("sample.jpg");
 			ExBoxView exBoxView = new ExBoxView(){
 				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.EndAndExpand,
+				VerticalOptions = LayoutOptions.Center,
+				HeightRequest = 150,
 				Color = Color.Blue
 			};
 

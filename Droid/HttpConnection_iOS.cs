@@ -2,28 +2,28 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Net;
-using System.Collections.ObjectModel;
 using System.Net.Http;
-using PresentationApp.iOS;
+using PresentationApp.Droid;
 using Xamarin.Forms;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.IO;
 
 
-[assembly: Dependency (typeof (HttpConnection_iOS))]
+[assembly: Dependency (typeof (HttpConnection_Droid))]
 
-namespace PresentationApp.iOS
+namespace PresentationApp.Droid
 {
-	public class HttpConnection_iOS : IHttpConnection
+	public class HttpConnection_Droid : IHttpConnection
 	{
 		private ServerInfo _serverInfo = new ServerInfo();
-		public HttpConnection_iOS ()
+		public HttpConnection_Droid ()
 		{
 		}
 		public ServerInfo GetServer (string key_message)
 		{
-			_serverInfo.server_ip_addr = "192.168.3.122";
+			System.Diagnostics.Debug.WriteLine ("get server");
+			System.Diagnostics.Debug.WriteLine (_serverInfo.server_ip_addr);
 			if (this._serverInfo.server_ip_addr != ""){
 				return this._serverInfo;
 			}
@@ -63,48 +63,26 @@ namespace PresentationApp.iOS
 			var stream = new MemoryStream(Encoding.Unicode.GetBytes(data));
 			var serializer = new DataContractJsonSerializer(typeof(ServerInfo));
 			ServerInfo server_info = (ServerInfo)serializer.ReadObject(stream);
-			return server_info;
+//			ServerInfo si = new ServerInfo ();
+//			si.server_ip_addr = "192.168.2.113";
+//			return si;
+			//return server_info;
 		}
 
-		public void ButtonClick(string code){
-			string jsonData = "";
-			switch (code) {
-			case "right":
-				jsonData = @"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""right""]}]}";
-				break;
-			case "left":
-				jsonData = @"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""left""]}]}";		
-				break;
-			default:
-				jsonData = "";
-				break;
-			}
-			SendToServer (jsonData);
-
-		}
-		public void MouseMove(float x, float y){
-
-		}
-		public void PostTweet(string tweet, string username){
-
-		}
-
-
-		private async void SendToServer(string jsonData)
-	 	{
-			string ip = this._serverInfo.server_ip_addr;
+		public async void SendToServer(string ip, string jsonData){
 			System.Diagnostics.Debug.WriteLine ("http post");
 			var client = new HttpClient();
 			string uri = "http://" + ip + ":8000";
+			System.Diagnostics.Debug.WriteLine (uri);
 			client.BaseAddress = new Uri(uri);
-			var content = new StringContent (jsonData, Encoding.UTF8, "application/json");
-//			HttpResponseMessage response = await client.PostAsync("/action", content);
-//			var result = await response.Content.ReadAsStringAsync();
-//			System.Diagnostics.Debug.WriteLine (result);
-		}
+			System.Diagnostics.Debug.WriteLine (client.BaseAddress);
 
-		public ObservableCollection<String> GetTimeline (){
-			return new ObservableCollection<String>();
+			var content = new StringContent (jsonData, Encoding.UTF8, "application/json");
+			HttpResponseMessage response = await client.PostAsync("/action", content);
+
+			// this result string should be something like: "{"token":"rgh2ghgdsfds"}"
+			var result = await response.Content.ReadAsStringAsync();
+			System.Diagnostics.Debug.WriteLine (result);
 		}
 
 	}
