@@ -9,7 +9,7 @@ namespace PresentationApp
 		void ButtonClick(string code);
 		void MouseMove(float x, float y);
 		void PostTweet(string tweet, string username);
-		ObservableCollection<String> GetTimeline ();
+		ObservableCollection<Tweet> GetTimeline ();
 	}
 }
 

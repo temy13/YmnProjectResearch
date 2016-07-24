@@ -38,10 +38,10 @@ namespace PresentationApp
                 HorizontalOptions = LayoutOptions.Center
             };
 
-            if (account.ID != "")
-                wellcome.Text = "ようこそ！" + account.ID + "さん";
+            if (account.Username != "")
+                wellcome.Text = "ようこそ！" + account.Username + "さん";
 
-            if (account.ID != "")//IDがセットされている時
+            if (account.Username != "")//IDがセットされている時
             {
                 this.Content = new StackLayout
                 {

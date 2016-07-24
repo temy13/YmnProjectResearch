@@ -7,14 +7,14 @@ namespace PresentationApp
 {
     public class Account
     {
-        private string id="";
+        private string username="";
         private string password="";
         private string image="";
 
-        public string ID
+        public string Username
         {
-            set { this.id = value; }
-            get { return this.id; }
+            set { this.username = value; }
+            get { return this.username; }
         }
 
         public string Password

@@ -35,7 +35,7 @@ namespace PresentationApp
                 //ページを遷移する
                 if (entry.Text != "")
                 {
-                    account.ID = entry.Text;
+                    account.Username = entry.Text;
                     account.Image = "Resources/go.png";//仮のアイコンゴーファーくん
                     await Navigation.PushAsync(new AudienceMainPage(server_info, account));
                 }
