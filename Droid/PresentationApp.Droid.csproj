@@ -72,7 +72,7 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExBoxViewRenderer.cs" />
-    <Compile Include="HttpConnection_iOS.cs" />
+    <Compile Include="HttpConnection_Droid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

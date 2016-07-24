@@ -32,7 +32,7 @@ namespace PresentationApp
             //    Text = "ページに戻る",
             //    HorizontalOptions = LayoutOptions.Center,
             //};
-            var wellcome = new Label
+            var welcome = new Label
             {
                 Text = "@"+account.Username ,
                 Font = Font.SystemFontOfSize(20),
@@ -72,42 +72,42 @@ namespace PresentationApp
             Content = new StackLayout
             {
                 Padding = new Thickness(0, Device.OnPlatform(40, 20, 20), 0, 0),
-                Children = {wellcome, entry, buttonSend}
+                Children = {welcome, entry, buttonSend}
             };
 
-			while (1) {
-				Thr
-			}
+			ListUpdating (buttonSend, entry, welcome);
         }
 
-        public void ListUpdate(Account account,Button buttonSend,Entry entry,Label wellcome)
-        {
-            //リスト表示
+        public async void ListUpdating(Button buttonSend,Entry entry,Label welcome)
+		{
+			while(true) { 
+				await Task.Delay (10000);
+				System.Diagnostics.Debug.WriteLine (string.Format ("Update"));
+				//リスト表示
 //            var ar = new ObservableCollection<Data>();
 //            foreach (var i in Enumerable.Range(0, message.Count))
 //            {
 //                ar.Add(new Data { Name = '@'+account.ID,Tweet = message[message.Count - 1 - i] ,Icon = "go.png" });
 //                //ar.Add("@"+account.ID+"："+message[message.Count-1-i]);
 //            }
-			var ar = DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).GetTimeline();
+				var ar = DependencyService.Get<IHttpConnection> (DependencyFetchTarget.GlobalInstance).GetTimeline ();
 	
-            // テンプレートの作成（ImageCell使用）
-            var cell = new DataTemplate(typeof(ImageCell));        
-            cell.SetBinding(ImageCell.TextProperty, "Username");       
-            cell.SetBinding(ImageCell.DetailProperty, "Text");     
-            cell.SetBinding(ImageCell.ImageSourceProperty, "Icon"); 
+				// テンプレートの作成（ImageCell使用）
+				var cell = new DataTemplate (typeof(ImageCell));        
+				cell.SetBinding (ImageCell.TextProperty, "Username");       
+				cell.SetBinding (ImageCell.DetailProperty, "Text");     
+				cell.SetBinding (ImageCell.ImageSourceProperty, "Icon"); 
+				var listView = new ListView {
+					ItemsSource = ar,
+					ItemTemplate = cell
+				};
+				Content = new StackLayout {
+					Padding = new Thickness (0, Device.OnPlatform (40, 20, 20), 0, 0),
+					Children = { welcome, entry, buttonSend, listView }
+				};
+			}
 
-            var listView = new ListView
-            {
-                ItemsSource = ar,
-                ItemTemplate = cell
-            };
-            Content = new StackLayout
-            {
-                Padding = new Thickness(0, Device.OnPlatform(40, 20, 20), 0, 0),
-                Children = {wellcome, entry, buttonSend, listView }
-            };
-        }
+		}
     }
 }
 

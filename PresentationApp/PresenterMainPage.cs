@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
@@ -63,8 +64,20 @@ namespace PresentationApp
 					exBoxView
 				}
 			};
-
+			SendNothing ();
 		}
+
+		public async void SendNothing()
+		{
+			while (true) { 
+				await Task.Delay (1000);
+				System.Diagnostics.Debug.WriteLine (string.Format ("Send"));
+				DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).ButtonClick(
+					""
+				);
+			}
+		}
+
 	}
 }
 
