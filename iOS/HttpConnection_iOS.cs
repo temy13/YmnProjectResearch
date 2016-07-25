@@ -2,8 +2,6 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Net;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Net.Http;
 using PresentationApp.iOS;
 using Xamarin.Forms;
@@ -12,6 +10,8 @@ using System.Runtime.Serialization.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 
 [assembly: Dependency (typeof (HttpConnection_iOS))]
@@ -27,7 +27,7 @@ namespace PresentationApp.iOS
 		}
 		public ServerInfo GetServer (string key_message)
 		{
-			_serverInfo.server_ip_addr = "192.168.3.122";
+			//_serverInfo.server_ip_addr = "192.168.3.122";
 			if (this._serverInfo.server_ip_addr != ""){
 				return this._serverInfo;
 			}
