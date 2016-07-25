@@ -6,6 +6,7 @@ namespace PresentationApp
 {
 	public class App : Application
 	{
+
 		public App ()
 		{
 			// NavigationPageを使用して最初のページを表示する
@@ -16,6 +17,8 @@ namespace PresentationApp
 				BarTextColor = Color.White
 			};
 		}
+
+
 
 		protected override void OnStart ()
 		{

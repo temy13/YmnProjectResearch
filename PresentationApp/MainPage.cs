@@ -16,8 +16,8 @@ namespace PresentationApp
             var audience_button = new Button { Text = "聴衆者!" };
 			//ボタンクリック時の処理
 			audience_button.Clicked += async (s, a) => {
-                //ページを遷移する
-                //ServerInfo server_info = DependencyService.Get<IHttpConnection>().GetServerByBroadCast(keyEntry.Text);
+				//ページを遷移する
+				//ServerInfo server_info = DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).GetServer(keyEntry.Text);
                 ServerInfo server_info = new ServerInfo();
                 await Navigation.PushAsync(new AudienceMainPage(server_info,account));
 			};
@@ -26,7 +26,8 @@ namespace PresentationApp
 			//ボタンクリック時の処理
 			presenter_button.Clicked += async (s, a) => {
 				//ページを遷移する
-				ServerInfo server_info = DependencyService.Get<IHttpConnection>().GetServerByBroadCast(keyEntry.Text);
+				ServerInfo server_info = DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).GetServer(keyEntry.Text);
+				//ServerInfo server_info = new ServerInfo();
 				await Navigation.PushAsync(new PresenterMainPage(server_info));
 			};
 
@@ -34,7 +35,7 @@ namespace PresentationApp
 				Spacing = 0,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Children = {
-					keyEntry,
+					//keyEntry,
 					audience_button,
 					presenter_button
 				}

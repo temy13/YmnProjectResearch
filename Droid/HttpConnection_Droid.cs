@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Net;
 using System.Net.Http;
-using PresentationApp.iOS;
+using PresentationApp.Droid;
 using Xamarin.Forms;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -14,16 +14,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 
-[assembly: Dependency (typeof (HttpConnection_iOS))]
 
-namespace PresentationApp.iOS
+[assembly: Dependency (typeof (HttpConnection_Droid))]
+
+namespace PresentationApp.Droid
 {
-	public class HttpConnection_iOS : IHttpConnection
+	public class HttpConnection_Droid : IHttpConnection
 	{
 		private ServerInfo _serverInfo = new ServerInfo();
 		public HttpConnection_iOS ()
 		{
-			
+
 		}
 		public ServerInfo GetServer (string key_message)
 		{
@@ -97,7 +98,7 @@ namespace PresentationApp.iOS
 
 
 		private async void SendToServer(string jsonData)
-	 	{
+		{
 			System.Diagnostics.Debug.WriteLine ("http post normal send");
 			string ip = this._serverInfo.server_ip_addr;
 			var client = new HttpClient();
@@ -116,11 +117,11 @@ namespace PresentationApp.iOS
 			System.Diagnostics.Debug.WriteLine (task.Result);
 			var ms = new MemoryStream (Encoding.UTF8.GetBytes (task.Result));
 			var data = (List<Tweet>)serializer.ReadObject(ms);
-            var ar = new ObservableCollection<Tweet>();
+			var ar = new ObservableCollection<Tweet>();
 			foreach(Tweet tweet in data)
-            {
+			{
 				ar.Add(new Tweet { Username = '@'+tweet.Username,Text = tweet.Text ,Icon = "go.png" });
-            }
+			}
 			return ar;
 		}
 
@@ -137,6 +138,7 @@ namespace PresentationApp.iOS
 			//var result =  @"[{""Username"": ""some_user_name"",""TextId"": ""TEXT_ID_1234567890"",""Text"": ""投稿されたテキスト1"" },{""Username"": ""some_user_name"",""TextId"": ""TEXT_ID_1234567891"",""Text"": ""投稿されたテキスト2""}]";
 			return result;	
 		}
+
 
 	}
 }
