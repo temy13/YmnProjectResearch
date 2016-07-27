@@ -64,7 +64,7 @@ namespace PresentationApp
 					exBoxView
 				}
 			};
-			SendNothing ();
+			//SendNothing ();
 		}
 
 		public async void SendNothing()

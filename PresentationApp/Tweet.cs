@@ -6,13 +6,13 @@ namespace PresentationApp
 	public class Tweet
 	{
 		[System.Runtime.Serialization.DataMember()]
-		public string Username { get; set; }
+		public string user_name { get; set; }
 		[System.Runtime.Serialization.DataMember()]
-		public string TextId { get; set; }
+		public string id { get; set; }
 		[System.Runtime.Serialization.DataMember()]
-		public string Text { get; set; }
+		public string text { get; set; }
 		[System.Runtime.Serialization.DataMember()]
-		public string Icon { get; set; }
+		public string icon { get; set; }
 
 
 		public Tweet ()
