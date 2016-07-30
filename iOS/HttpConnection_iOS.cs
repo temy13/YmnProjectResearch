@@ -20,6 +20,8 @@ namespace PresentationApp.iOS
 {
 	public class HttpConnection_iOS : IHttpConnection
 	{
+		static int count = 0;
+
 		private ServerInfo _serverInfo = new ServerInfo();
 		public HttpConnection_iOS ()
 		{
@@ -80,6 +82,12 @@ namespace PresentationApp.iOS
 			case "left":
 				jsonData = @"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""left""]}]}";		
 				break;
+			case "circle":
+				jsonData = @"{""cmds"":[{""action"": ""pen"", ""option"": ""circle"", ""r"":""normal""}]}";
+				break;
+			case "clear":
+				jsonData = @"{""cmds"":[{""action"": ""pen"", ""option"": ""clear""}]}";
+				break;
 			default:
 				jsonData = @"{}";
 				break;
@@ -87,7 +95,14 @@ namespace PresentationApp.iOS
 			SendToServer (jsonData);
 
 		}
-		public void MouseMove(float[] x_array, float[] y_array){
+
+		public void MouseMove(float x, float y){
+			string jsonData = @"{""cmds"":[{""action"": ""mouse"", ""option"": ""relative"", ""pos"":{""x"":" + x.ToString () + @",""y"":" + y.ToString () + @"}}]}";
+			SendToServer (jsonData);
+		}
+
+
+/*		public void MouseMove(float[] x_array, float[] y_array){
 			if (x_array.Length != y_array.Length) {
 				return; 
 			}
@@ -97,7 +112,7 @@ namespace PresentationApp.iOS
 			}
 			jsonData += @"]}";
 			SendToServer (jsonData);
-		}
+		}*/
 		public void PostTweet(string tweet, string username){
 			string jsonData = @"{""cmds"":[{""action"": ""submit_text"", ""option"": """", ""args"":["""+ username +@""", """+ tweet + @"""]}]}";
 			SendToServer (jsonData);
@@ -106,15 +121,22 @@ namespace PresentationApp.iOS
 
 		private async void SendToServer(string jsonData)
 	 	{
+			Interlocked.Increment (ref count);
+			System.Diagnostics.Debug.WriteLine (string.Format("count: {0}", count));
 			System.Diagnostics.Debug.WriteLine ("http post normal send");
 			string ip = this._serverInfo.server_ip_addr;
 			var client = new HttpClient();
 			string uri = "http://" + ip + ":8000";
 			client.BaseAddress = new Uri(uri);
 			var content = new StringContent (jsonData, Encoding.UTF8, "application/json");
-			HttpResponseMessage response = await client.PostAsync("/action", content);
-			var result = await response.Content.ReadAsStringAsync();
-			System.Diagnostics.Debug.WriteLine (string.Format("res result: {0}",result));
+			//try{
+				HttpResponseMessage response = await client.PostAsync("/action", content);
+				var result = await response.Content.ReadAsStringAsync();
+				System.Diagnostics.Debug.WriteLine (string.Format("res result: {0}",result));
+				Interlocked.Decrement (ref count);
+//			}catch(Exception e){
+//				System.Diagnostics.Debug.WriteLine(string.Format("error :{0}", e));
+//			}	
 		}
 
 

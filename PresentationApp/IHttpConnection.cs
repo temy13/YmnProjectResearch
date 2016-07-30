@@ -9,7 +9,8 @@ namespace PresentationApp
 	{
 		ServerInfo GetServer (string key_message);
 		void ButtonClick(string code);
-		void MouseMove(float[] x, float[] y);
+		//void MouseMove(float x, float y);
+		void MouseMove(float x, float y);
 		void PostTweet(string tweet, string username);
 		Task<ObservableCollection<Tweet>> GetTimeline ();
 	}

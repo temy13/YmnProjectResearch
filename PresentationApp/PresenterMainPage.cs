@@ -47,21 +47,66 @@ namespace PresentationApp
 				}
 			};
 
+			Label label = new Label ();
+			label.Text = "↓マウス移動↓";
+
 //			var image = new Image { Aspect = Aspect.AspectFit };
 //			image.Source = ImageSource.FromFile("sample.jpg");
 			ExBoxView exBoxView = new ExBoxView(){
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.Center,
-				HeightRequest = 150,
+				HeightRequest = 300,
 				Color = Color.Blue
 			};
+
+			var circle_button = new Button { 
+				Text = "○",
+				TextColor = Color.Black,
+				BackgroundColor = Color.Aqua,
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.FillAndExpand
+			};
+
+			circle_button.Clicked += (s, a) => {
+				DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).ButtonClick(
+					"circle"
+				);
+			};
+
+			var clear_button = new Button { 
+				Text = "消す",
+				TextColor = Color.Black,
+				BackgroundColor = Color.Aqua,
+				VerticalOptions = LayoutOptions.Center,
+				HorizontalOptions = LayoutOptions.FillAndExpand
+			};
+
+			clear_button.Clicked += (s, a) => {
+				DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).ButtonClick(
+					"clear"
+				);
+			};
+
+			StackLayout other_buttons = new StackLayout {
+				Spacing = 20,
+				Padding = new Thickness (10, 10, 10, 20),
+				Orientation = StackOrientation.Horizontal,
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				Children = {
+					circle_button,
+					clear_button
+				}
+			};
+
 
 			this.Content = new StackLayout {
 				Spacing = 0,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Children = {
 					buttons,
-					exBoxView
+					label,
+					exBoxView,
+					other_buttons
 				}
 			};
 			//SendNothing ();
