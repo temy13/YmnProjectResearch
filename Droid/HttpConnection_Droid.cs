@@ -33,6 +33,19 @@ namespace PresentationApp.Droid
 			if (this._serverInfo.server_ip_addr != ""){
 				return this._serverInfo;
 			}
+			//			//boradcast送信
+			//			// 送受信に利用するポート番号
+			//			var port = 8000;
+			//			// 送信データ
+			//			var buffer = Encoding.UTF8.GetBytes(key_message);
+			//			// ブロードキャスト送信
+			//			var client = new UdpClient(port);
+			//			client.EnableBroadcast = true;
+			//			client.Connect(new IPEndPoint(IPAddress.Broadcast, port));
+			//			client.Send(buffer, buffer.Length);
+			//			client.Close();
+			//			//受信
+			//			System.Diagnostics.Debug.WriteLine("sending");
 			this._serverInfo = GetServerByListenBroadcast();
 			return _serverInfo;
 		}
@@ -68,6 +81,12 @@ namespace PresentationApp.Droid
 			case "left":
 				jsonData = @"{""cmds"":[{""action"": ""key"", ""option"": ""keyTap"", ""args"":[""left""]}]}";		
 				break;
+			case "circle":
+				jsonData = @"{""cmds"":[{""action"": ""pen"", ""option"": ""circle"", ""r"":""normal""}]}";
+				break;
+			case "clear":
+				jsonData = @"{""cmds"":[{""action"": ""pen"", ""option"": ""clear""}]}";
+				break;
 			default:
 				jsonData = @"{}";
 				break;
@@ -75,7 +94,14 @@ namespace PresentationApp.Droid
 			SendToServer (jsonData);
 
 		}
-		public void MouseMove(float[] x_array, float[] y_array){
+
+		public void MouseMove(float x, float y){
+			string jsonData = @"{""cmds"":[{""action"": ""mouse"", ""option"": ""relative"", ""pos"":{""x"":" + x.ToString () + @",""y"":" + y.ToString () + @"}}]}";
+			SendToServer (jsonData);
+		}
+
+
+		/*		public void MouseMove(float[] x_array, float[] y_array){
 			if (x_array.Length != y_array.Length) {
 				return; 
 			}
@@ -85,7 +111,7 @@ namespace PresentationApp.Droid
 			}
 			jsonData += @"]}";
 			SendToServer (jsonData);
-		}
+		}*/
 		public void PostTweet(string tweet, string username){
 			string jsonData = @"{""cmds"":[{""action"": ""submit_text"", ""option"": """", ""args"":["""+ username +@""", """+ tweet + @"""]}]}";
 			SendToServer (jsonData);
@@ -94,22 +120,32 @@ namespace PresentationApp.Droid
 
 		private async void SendToServer(string jsonData)
 		{
+			Interlocked.Increment (ref count);
+			System.Diagnostics.Debug.WriteLine (string.Format("count: {0}", count));
 			System.Diagnostics.Debug.WriteLine ("http post normal send");
 			string ip = this._serverInfo.server_ip_addr;
 			var client = new HttpClient();
 			string uri = "http://" + ip + ":8000";
 			client.BaseAddress = new Uri(uri);
 			var content = new StringContent (jsonData, Encoding.UTF8, "application/json");
+			//try{
 			HttpResponseMessage response = await client.PostAsync("/action", content);
 			var result = await response.Content.ReadAsStringAsync();
 			System.Diagnostics.Debug.WriteLine (string.Format("res result: {0}",result));
+			Interlocked.Decrement (ref count);
+			//			}catch(Exception e){
+			//				System.Diagnostics.Debug.WriteLine(string.Format("error :{0}", e));
+			//			}	
 		}
 
 
 		public async Task<ObservableCollection<Tweet>> GetTimeline (){
 			string result = await GetTimelineFromServer ();
 			var serializer = new DataContractJsonSerializer(typeof(TimelineResult));
+			//			var serializer = new DataContractJsonSerializer(typeof(List<Tweet>));
+			//			System.Diagnostics.Debug.WriteLine ("waiting");
 			var ms = new MemoryStream (Encoding.UTF8.GetBytes (result));
+			//			var data = (List<Tweet>)serializer.ReadObject(ms);
 			var data = (TimelineResult)serializer.ReadObject(ms);
 			System.Diagnostics.Debug.WriteLine (data);
 
@@ -133,6 +169,7 @@ namespace PresentationApp.Droid
 			HttpResponseMessage response = await client.PostAsync("/action", content);
 			var result = await response.Content.ReadAsStringAsync();
 			System.Diagnostics.Debug.WriteLine (string.Format("result: {0}",result));
+			//var result =  @"[{""Username"": ""some_user_name"",""TextId"": ""TEXT_ID_1234567890"",""Text"": ""投稿されたテキスト1"" },{""Username"": ""some_user_name"",""TextId"": ""TEXT_ID_1234567891"",""Text"": ""投稿されたテキスト2""}]";
 			return result;	
 		}
 					
