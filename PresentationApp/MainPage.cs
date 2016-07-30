@@ -17,8 +17,8 @@ namespace PresentationApp
 			//ボタンクリック時の処理
 			audience_button.Clicked += async (s, a) => {
 				//ページを遷移する
-				//ServerInfo server_info = DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).GetServer(keyEntry.Text);
-                ServerInfo server_info = new ServerInfo();
+				ServerInfo server_info = DependencyService.Get<IHttpConnection>(DependencyFetchTarget.GlobalInstance).GetServer(keyEntry.Text);
+                //ServerInfo server_info = new ServerInfo();
                 await Navigation.PushAsync(new AudienceMainPage(server_info,account));
 			};
 			//ボタンを生成

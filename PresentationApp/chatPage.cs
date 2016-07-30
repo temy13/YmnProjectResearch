@@ -65,7 +65,7 @@ namespace PresentationApp
 						entry.Text, account.Username
 					);
 				}
-                //ListUpdate(account,buttonSend, entry,wellcome);
+				ListUpdate(buttonSend, entry, welcome);
                 entry.Text = "";
             };
 
@@ -74,37 +74,44 @@ namespace PresentationApp
                 Padding = new Thickness(0, Device.OnPlatform(40, 20, 20), 0, 0),
                 Children = {welcome, entry, buttonSend}
             };
-
-			ListUpdating (buttonSend, entry, welcome);
+			//ListUpdating (buttonSend, entry, welcome);
         }
+
+		private async void ListUpdate(Button buttonSend,Entry entry,Label welcome){
+			await Task.Delay (1000);
+			System.Diagnostics.Debug.WriteLine (string.Format ("Update"));
+			//リスト表示
+			//            var ar = new ObservableCollection<Data>();
+			//            foreach (var i in Enumerable.Range(0, message.Count))
+			//            {
+			//                ar.Add(new Data { Name = '@'+account.ID,Tweet = message[message.Count - 1 - i] ,Icon = "go.png" });
+			//                //ar.Add("@"+account.ID+"："+message[message.Count-1-i]);
+			//            }
+
+			var ar = await DependencyService.Get<IHttpConnection> (DependencyFetchTarget.GlobalInstance).GetTimeline ();
+
+			// テンプレートの作成（ImageCell使用）
+			var cell = new DataTemplate (typeof(ImageCell));        
+			cell.SetBinding (ImageCell.TextProperty, "user_name");       
+			cell.SetBinding (ImageCell.DetailProperty, "text");     
+			cell.SetBinding (ImageCell.ImageSourceProperty, "icon"); 
+			var listView = new ListView {
+				ItemsSource = ar,
+				ItemTemplate = cell
+			};
+			Content = new StackLayout {
+				Padding = new Thickness (0, Device.OnPlatform (40, 20, 20), 0, 0),
+				Children = { welcome, entry, buttonSend, listView }
+			};
+
+		}
 
         public async void ListUpdating(Button buttonSend,Entry entry,Label welcome)
 		{
 			while(true) { 
+				System.Diagnostics.Debug.WriteLine ("wait");
 				await Task.Delay (10000);
-				System.Diagnostics.Debug.WriteLine (string.Format ("Update"));
-				//リスト表示
-//            var ar = new ObservableCollection<Data>();
-//            foreach (var i in Enumerable.Range(0, message.Count))
-//            {
-//                ar.Add(new Data { Name = '@'+account.ID,Tweet = message[message.Count - 1 - i] ,Icon = "go.png" });
-//                //ar.Add("@"+account.ID+"："+message[message.Count-1-i]);
-//            }
-				var ar = DependencyService.Get<IHttpConnection> (DependencyFetchTarget.GlobalInstance).GetTimeline ();
-	
-				// テンプレートの作成（ImageCell使用）
-				var cell = new DataTemplate (typeof(ImageCell));        
-				cell.SetBinding (ImageCell.TextProperty, "Username");       
-				cell.SetBinding (ImageCell.DetailProperty, "Text");     
-				cell.SetBinding (ImageCell.ImageSourceProperty, "Icon"); 
-				var listView = new ListView {
-					ItemsSource = ar,
-					ItemTemplate = cell
-				};
-				Content = new StackLayout {
-					Padding = new Thickness (0, Device.OnPlatform (40, 20, 20), 0, 0),
-					Children = { welcome, entry, buttonSend, listView }
-				};
+				ListUpdate(buttonSend, entry, welcome);
 			}
 
 		}

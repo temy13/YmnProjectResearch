@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace PresentationApp
 {
@@ -7,9 +9,10 @@ namespace PresentationApp
 	{
 		ServerInfo GetServer (string key_message);
 		void ButtonClick(string code);
+		//void MouseMove(float x, float y);
 		void MouseMove(float x, float y);
 		void PostTweet(string tweet, string username);
-		ObservableCollection<Tweet> GetTimeline ();
+		Task<ObservableCollection<Tweet>> GetTimeline ();
 	}
 }
 
